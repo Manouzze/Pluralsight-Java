@@ -1,12 +1,14 @@
 package com.manon.pluralsight.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Type;
-
 
 import java.util.List;
 
 @Entity(name = "speakers")
+@JsonIgnoreProperties( {"hibernateLazyInitializer", "handler"})
 public class Speaker {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,22 +18,25 @@ public class Speaker {
     private String title;
     private String compagny;
     private String speaker_bio;
-    @Lob
-    @Type(type="org.hibernate.type.BinaryType")
-    private byte[] speaker_photo;
+
+  /*  @Lob
+    @Type(type = "org.hibernate.type.BinaryType")
+    @Column(name = "speaker_photo")
+    private byte[] speaker_photo;*/
     @ManyToMany(mappedBy = "speakers")
+    @JsonIgnore
     private List<Session> sessions;
 
     public Speaker(){
     }
 
-    public byte[] getSpeaker_photo() {
+/*    public byte[] getSpeaker_photo() {
         return speaker_photo;
     }
 
     public void setSpeaker_photo(byte[] speaker_photo) {
         this.speaker_photo = speaker_photo;
-    }
+    }*/
 
     public List<Session> getSessions() {
         return sessions;
